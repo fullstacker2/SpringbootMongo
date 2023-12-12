@@ -33,11 +33,16 @@ public class EmployeeService {
     }
 
     // update employee
-    public String updateEmployee(Employee emp) {
-        if(tempEmp.isEmpty()) {
+    public String updateEmployee(String id, Employee emp) {
+        ObjectId objectId = new ObjectId(id);
+
+        // Use findById to retrieve the entity by its ID
+        Optional<Employee> entityOptional = employeeRepo.findById(objectId);
+
+        if(entityOptional.isEmpty()) {
             throw new RuntimeException("given employee doesn't exist");
         }
-        var empRec = tempEmp.get();
+        var empRec = entityOptional.get();
 
         if (emp.getName() != null)
             empRec.setName(emp.getName());
@@ -52,8 +57,8 @@ public class EmployeeService {
 
     // remove employee
     public String removeEmpById(ObjectId id) {
-        Optional<Employee> optionalEmp = employeeRepo.findById(id);
-        if(optionalEmp.isEmpty()) {
+        Optional<Employee> optionalAdmin = employeeRepo.findById(id);
+        if(optionalAdmin.isEmpty()) {
             throw new RuntimeException("Employee id" + id + "doesn't exist");
         }
         employeeRepo.deleteById(id);
