@@ -34,15 +34,16 @@ public class EmployeeService {
 
     // update employee
     public String updateEmployee(String id, Employee emp) {
+
         ObjectId objectId = new ObjectId(id);
 
         // Use findById to retrieve the entity by its ID
-        Optional<Employee> entityOptional = employeeRepo.findById(objectId);
+        Optional<Employee> OptionalEmp = employeeRepo.findById(objectId);
 
-        if(entityOptional.isEmpty()) {
+        if(OptionalEmp.isEmpty()) {
             throw new RuntimeException("given employee doesn't exist");
         }
-        var empRec = entityOptional.get();
+        var empRec = OptionalEmp.get();
 
         if (emp.getName() != null)
             empRec.setName(emp.getName());
@@ -56,15 +57,20 @@ public class EmployeeService {
     }
 
     // remove employee
-    public String removeEmpById(ObjectId id) {
-        Optional<Employee> optionalAdmin = employeeRepo.findById(id);
-        if(optionalAdmin.isEmpty()) {
+    public String removeEmpById(String id) {
+
+        ObjectId objectId = new ObjectId(id);
+
+        // Use findById to retrieve the entity by its ID
+        Optional<Employee> OptionalEmp = employeeRepo.findById(objectId);
+
+        if(OptionalEmp.isEmpty()) {
             throw new RuntimeException("Employee id" + id + "doesn't exist");
         }
-        employeeRepo.deleteById(id);
+        employeeRepo.deleteById(objectId);
         return "{" +
                 "\"message\":"+"Successfully deleted employee\",\n"+
-                "\"data\":"+",\n"+
+                "\"id\":"+ id +",\n"+
                 "}";
     }
 

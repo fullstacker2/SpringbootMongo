@@ -24,7 +24,7 @@ public class EmployeeController {
     }
 
     // get all employees
-    @GetMapping("/get-employees")
+    @GetMapping("/getAll")
     public List<Employee> getAllEmployees() {
         return employeeService.getAllEmployees();
     }
@@ -34,13 +34,13 @@ public class EmployeeController {
     public String updateEmployee(@RequestBody Employee emp, @PathVariable String id) {return employeeService.updateEmployee(id,emp);}
 
     //delete employee by id
-    @PostMapping("/del-employee/{id}")
-    public String  removeEmpById(@PathVariable ObjectId id) {
+    @GetMapping("/delete/{id}")
+    public String  removeEmpById(@PathVariable String id) {
         return employeeService.removeEmpById(id);
     }
 
     // remove all employees
-    @GetMapping("/del-employees")
+    @GetMapping("/deleteAll")
     public void removeAllEmployees() {
         employeeService.removeAllEmployees();
     }
