@@ -60,7 +60,6 @@ public class JwtFilter extends GenericFilterBean {
         if(httpServletRequest.getRequestURI().contains("/admin"))
             return true; //true if request is allowed without a token
 
-
         return false; //false if request is not allowed without a token
     }
 }

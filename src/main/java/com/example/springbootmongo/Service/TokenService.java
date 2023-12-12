@@ -15,7 +15,6 @@ import java.util.Date;
 public class TokenService {
     public static final String token_secret="df9hsdDSF324sa1fs6da"; // random string for token_secret
 
-
     // creating a token
     public  String createToken(ObjectId userId){
         try{
@@ -36,12 +35,12 @@ public class TokenService {
             Algorithm algo=Algorithm.HMAC256(token_secret);
 
             // building te verifier with the HMAC256 algorithm
-            JWTVerifier jwtVerifier=JWT.require(algo).build();
+            JWTVerifier jwtVerifier = JWT.require(algo).build();
 
-            // creating a decodedJWT using verifier
-            DecodedJWT decodedJWT=jwtVerifier.verify(token);
+            // decoding the token using verifier
+            DecodedJWT decodedJWT = jwtVerifier.verify(token);
 
-            //decoding it using getClaim
+            //using getClaim to get userId
             return  decodedJWT.getClaim("userId").asString();
         }catch (UnsupportedEncodingException |JWTCreationException e){
             e.printStackTrace();
