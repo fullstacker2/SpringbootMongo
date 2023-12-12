@@ -1,6 +1,7 @@
 package com.example.springbootmongo.Service;
 
 import com.example.springbootmongo.Model.Admin;
+import com.example.springbootmongo.Model.Employee;
 import com.example.springbootmongo.Repository.AdminRepo;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,28 +20,16 @@ public class AdminService {
         this.tokenService = tokenService;
     }
 
-    // Get an admin
-    public Admin getAdmin(ObjectId id) {
-        Optional<Admin> optionalAdmin = adminRepo.findById(id);
-        return optionalAdmin.orElseGet(optionalAdmin::get);
-    }
-
-    // list admins
-    public List<Admin> getAdmins() {
-        List<Admin> getAdmins = adminRepo.findAll();
-        return getAdmins;
-    }
-
     // Signup an admin
-    public String signup(Admin user) {
-        Admin savedAdmin = adminRepo.save(user);
+    public String signup(Admin admin) {
+        Admin savedAdmin = adminRepo.save(admin);
         return "{" +
-                "\"message\":"+"Successfully created user\",\n"+
+                "\"message\":"+"Successfully created admin\",\n"+
                 "\"data\":"+savedAdmin+",\n"+
                 "}";
     }
 
-    // login an admin
+    // Admin login
     public String login(String email, String password) {
         List<Admin> foundAdmins = adminRepo.getAdminByEmail(email);
         if(foundAdmins.isEmpty()) {

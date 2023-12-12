@@ -13,40 +13,45 @@ import java.util.Date;
 
 @Service
 public class TokenService {
-    public static final String token_secret = "df9hsdDSF324sa1fs6da";
+    public static final String token_secret="df9hsdDSF324sa1fs6da"; // random string for token_secret
 
-    // Creating a token
-    public String createToken(ObjectId userId) {
+
+    // creating a token
+    public  String createToken(ObjectId userId){
         try{
-            Algorithm algo = Algorithm.HMAC256(token_secret);
-            String token = JWT.
-                    create().
-                    withClaim("userId",userId.toString()).
-                    withClaim("createdAt", new Date()).
-                    sign(algo);
+            Algorithm algo=Algorithm.HMAC256(token_secret); //HMAC256 is the algo to create the token
+            String token= JWT.create().withClaim("userId", userId.toString()).
+                    withClaim("createdAt", new Date()).sign(algo);
+            //adding claim to the token, while decoding we can do getClaim
             return token;
-        }catch(UnsupportedEncodingException |JWTCreationException e) {
+        }catch (UnsupportedEncodingException | JWTCreationException e){
             e.printStackTrace();
         }
         return null;
     }
 
-    // Decoding a token
-    public String getUserIdToken(String token) {
+    //decoding the token
+    public String getUserIdToken(String token){
         try {
-            Algorithm algo = Algorithm.HMAC256(token_secret);
-            JWTVerifier jwtVerifier = JWT.require(algo).build();
-            DecodedJWT decodedJWT = jwtVerifier.verify(token);
-            return decodedJWT.getClaim("userId").asString();
-        } catch (UnsupportedEncodingException e) {
+            Algorithm algo=Algorithm.HMAC256(token_secret);
+
+            // building te verifier with the HMAC256 algorithm
+            JWTVerifier jwtVerifier=JWT.require(algo).build();
+
+            // creating a decodedJWT using verifier
+            DecodedJWT decodedJWT=jwtVerifier.verify(token);
+
+            //decoding it using getClaim
+            return  decodedJWT.getClaim("userId").asString();
+        }catch (UnsupportedEncodingException |JWTCreationException e){
             e.printStackTrace();
         }
         return null;
     }
 
-    //Token valid
-    public boolean isTokenValid(String token) {
-        String userId = this.getUserIdToken(token);
-        return userId != null;
+    //to check if token is valid
+    public boolean isTokenValid(String token){
+        String userId=this.getUserIdToken(token);
+        return userId !=null; // true if userID is not null
     }
 }
